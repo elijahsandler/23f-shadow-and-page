@@ -6,19 +6,19 @@ DROP SCHEMA IF EXISTS `shadow` ;
 CREATE SCHEMA IF NOT EXISTS `shadow` DEFAULT CHARACTER SET latin1 ;
 USE `shadow` ;
 
---DROP DATABASE IF EXISTS Shadow;
+-- DROP DATABASE IF EXISTS Shadow;
 
---CREATE DATABASE Shadow;
+-- CREATE DATABASE Shadow;
 
---USE Shadow;
+--  USE Shadow;
 
 CREATE TABLE Employees (
-    EmployeeID INT PRIMARY KEY,
+    EmployeeID CHAR(10) PRIMARY KEY,
     FirstName VARCHAR(50) NOT NULL,
     LastName VARCHAR(50) NOT NULL,
     Email VARCHAR(50) NOT NULL,
     Position VARCHAR(50) NOT NULL,
-    ManagerID INT,
+    ManagerID CHAR(10),
     Salary INT NOT NULL,
     HireDate DATETIME NOT NULL,
     AccessLevel TINYINT(3),
@@ -67,7 +67,7 @@ CREATE TABLE Sales(
     SaleID INT PRIMARY KEY,
     Date DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
     Customer INT NOT NULL,
-    Employee INT NOT NULL,
+    Employee CHAR(10) NOT NULL,
     FOREIGN KEY (Customer) REFERENCES Customers(CustomerID) ON UPDATE CASCADE,
     FOREIGN KEY (Employee) REFERENCES Employees(EmployeeID) ON UPDATE CASCADE
 );
@@ -130,7 +130,7 @@ CREATE TABLE ResearchCountercurseIDs(
 );
 
 CREATE TABLE Employees_Projects (
-    EmployeeID INT,
+    EmployeeID CHAR(10),
     ProjectID INT,
     DateJoined DATE NOT NULL,
     DateLeft DATE,
