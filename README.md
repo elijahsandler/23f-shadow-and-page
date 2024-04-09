@@ -15,6 +15,7 @@ This repo contains a boilerplate setup for spinning up 3 Docker containers:
 1. Build the images with `docker compose build`
 1. Start the containers with `docker compose up`.  To run in detached mode, run `docker compose up -d`. 
 
+This first commit contains a test to make sure everything doesn't explode. 
 
 
 
