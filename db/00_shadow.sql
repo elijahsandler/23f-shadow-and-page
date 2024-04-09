@@ -6,11 +6,6 @@ DROP SCHEMA IF EXISTS `shadow` ;
 CREATE SCHEMA IF NOT EXISTS `shadow` DEFAULT CHARACTER SET latin1 ;
 USE `shadow` ;
 
--- DROP DATABASE IF EXISTS Shadow;
-
--- CREATE DATABASE Shadow;
-
---  USE Shadow;
 
 CREATE TABLE Employees (
     EmployeeID CHAR(10) PRIMARY KEY,
