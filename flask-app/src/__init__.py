@@ -37,7 +37,7 @@ def create_app():
 
     # Register the routes from each Blueprint with the app object
     # and give a url prefix to each
-    app.register_blueprint(books, url_prefic = '/b')
+    app.register_blueprint(books, url_prefix = '/b')
 
     # Don't forget to return the app object
     return app
