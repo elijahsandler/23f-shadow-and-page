@@ -63,6 +63,10 @@ def add_new_book():
     publisher_id = the_data['publisher_id']
 
     # # Constructing the query
+    query = f"insert into books (bookid, title, year, authorfirstname, authorlastname, \
+        genreid, publisherid) 
+        values ('{book_id}', '{title}', '{year}', '{firstname}', '{lastname}', \
+        '{genre_id}', '{publisher_id}')
     # query = 'insert into products (product_name, description, category, list_price) values ("'
     # query += name + '", "'
     # query += description + '", "'
