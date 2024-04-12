@@ -30,7 +30,7 @@ def create_app():
     # Example: localhost:8001
     @app.route("/")
     def welcome():
-        return "<h1>Welcome to the 3200 boilerplate app</h1>"
+        return "<h1>Welcome to Shadow and Page</h1>"
 
     # Import the various Beluprint Objects
     from src.customers.customers import customers
