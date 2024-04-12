@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify, make_response
+from flask import Blueprint, request, jsonify, make_response, current_app
 import json
 from src import db
 
@@ -64,9 +64,8 @@ def add_new_book():
 
     # # Constructing the query
     query = f"insert into books (bookid, title, year, authorfirstname, authorlastname, \
-        genreid, publisherid) 
-        values ('{book_id}', '{title}', '{year}', '{firstname}', '{lastname}', \
-        '{genre_id}', '{publisher_id}')
+        genreid, publisherid) values ('{book_id}', '{title}', '{year}', '{firstname}', '{lastname}', \
+        '{genre_id}', '{publisher_id}')"
     # query = 'insert into products (product_name, description, category, list_price) values ("'
     # query += name + '", "'
     # query += description + '", "'
