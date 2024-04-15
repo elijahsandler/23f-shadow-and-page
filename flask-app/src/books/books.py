@@ -29,10 +29,10 @@ def get_book(bookID):
     cursor = db.get_db().cursor()
     cursor.execute(
         f"SELECT BookID, Title, Year, AuthorFirstName, AuthorLastName, GenreName, Publisher \
-        From Books \
+        FROM Books \
         NATURAL JOIN Genre \
         NATURAL JOIN Publisher \
-        WHERE '{bookID}' IN BookID")
+        WHERE BookID = '{bookID}'")
     row_headers = [x[0] for x in cursor.description]
     json_data = []
     theData = cursor.fetchall()
