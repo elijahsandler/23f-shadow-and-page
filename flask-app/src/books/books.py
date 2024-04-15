@@ -32,7 +32,7 @@ def get_book(bookID):
         From Books \
         NATURAL JOIN Genre \
         NATURAL JOIN Publisher \
-        WHERE bookID='{bookID}'")
+        WHERE '{bookID}' IN BookID")
     row_headers = [x[0] for x in cursor.description]
     json_data = []
     theData = cursor.fetchall()
