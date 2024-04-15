@@ -62,8 +62,8 @@ def add_new_book():
 
     # # Constructing the query
     query = f"insert into books (bookid, title, year, authorfirstname, authorlastname, \
-        genreid, publisherid) values ('{book_id}', '{title}', '{year}', '{firstname}', '{lastname}', \
-        '{genre_id}', '{publisher_id}')"
+        genreid, publisherid) values ('{book_id}', '{title}', {year}, '{firstname}', '{lastname}', \
+        {genre_id}, {publisher_id})"
 
     # executing and committing the insert statement 
     cursor = db.get_db().cursor()
@@ -90,7 +90,7 @@ def update_book():
     # Constructing the query
     query = f'update books set `GenreID` = "{genre_id}", `Title` = "{title}",\
           `Year` = {year}, `AuthorFirstName` = "{firstname}", `AuthorLastName` = "{lastname}", \
-            `PublisherID` = "{publisher_id}" where `BookID` = {book_id}'
+            `PublisherID` = {publisher_id} where `BookID` = "{book_id}"'
     current_app.logger.info(query)
 
     # executing and committing the update statement 
@@ -108,7 +108,7 @@ def remove_book():
 
     book_id = the_data['book_id']
 
-    query = f'delete from books where `BookID`={book_id}'
+    query = f'delete from books where `BookID`="{book_id}"'
     current_app.logger.info(query)
 
     # executing and committing the update statement 
