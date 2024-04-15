@@ -10,10 +10,8 @@ books = Blueprint('books', __name__)
 def get_books():
     cursor = db.get_db().cursor()
     cursor.execute(
-        'SELECT BookID, Title, Year, AuthorFirstName, AuthorLastName, GenreName, Publisher \
-        From Books \
-        NATURAL JOIN Genre \
-        NATURAL JOIN Publisher \
+        'SELECT BookID, Title, AuthorFirstName, AuthorLastName, \
+         From Books \
         ORDER BY BookID')
     row_headers = [x[0] for x in cursor.description]
     json_data = []
@@ -25,7 +23,7 @@ def get_books():
     the_response.mimetype = 'application/json'
     return the_response
 
-# Get book detail for book with particular userID
+# Get book detail for book with particular bookID
 @books.route('/books/<bookID>', methods=['GET'])
 def get_book(bookID):
     cursor = db.get_db().cursor()
@@ -66,14 +64,54 @@ def add_new_book():
     query = f"insert into books (bookid, title, year, authorfirstname, authorlastname, \
         genreid, publisherid) values ('{book_id}', '{title}', '{year}', '{firstname}', '{lastname}', \
         '{genre_id}', '{publisher_id}')"
-    # query = 'insert into products (product_name, description, category, list_price) values ("'
-    # query += name + '", "'
-    # query += description + '", "'
-    # query += category + '", '
-    # query += str(price) + ')'
-    # current_app.logger.info(query)
 
     # executing and committing the insert statement 
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    db.get_db().commit()
+    
+    return 'Success!'
+
+@books.route('/books', methods=['PUT'])
+def update_book():
+    # collecting data from the request object 
+    the_data = request.json
+    current_app.logger.info(the_data)
+
+    #extracting the variable
+    book_id = the_data['book_id']
+    title = the_data['book_title']
+    year = the_data['book_year']
+    firstname = the_data['book_authorfirstname']
+    lastname = the_data['book_authorlastname']
+    genre_id = the_data['genre_id']
+    publisher_id = the_data['publisher_id']
+
+    # Constructing the query
+    query = f'update books set `GenreID` = "{genre_id}", `Title` = "{title}",\
+          `Year` = {year}, `AuthorFirstName` = "{firstname}", `AuthorLastName` = "{lastname}", \
+            `PublisherID` = "{publisher_id}" where `BookID` = {book_id}'
+    current_app.logger.info(query)
+
+    # executing and committing the update statement 
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    db.get_db().commit()
+    
+    return 'Success!'
+
+# remove a book from the database
+@books.route('/books', methods=['DELETE'])
+def remove_book():
+    the_data = request.json
+    current_app.logger.info(the_data)
+
+    book_id = the_data['book_id']
+
+    query = f'delete from books where `BookID`={book_id}'
+    current_app.logger.info(query)
+
+    # executing and committing the update statement 
     cursor = db.get_db().cursor()
     cursor.execute(query)
     db.get_db().commit()
