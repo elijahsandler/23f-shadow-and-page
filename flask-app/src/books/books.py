@@ -118,8 +118,9 @@ def remove_book():
     
     return 'Success!'
 
+# map of titles to bookIDs for sasha :)
 @books.route('/map', methods=['GET'])
-def get_books():
+def get_book_map():
     cursor = db.get_db().cursor()
     cursor.execute(
         'SELECT `BookID`, `Title` \
