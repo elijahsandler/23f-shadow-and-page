@@ -79,7 +79,7 @@ def get_copy_pricess(copyID):
     cursor.execute(
         f'SELECT DateSet, Price \
         FROM Inventory \
-        NATURAL JOIN BookPrices
+        NATURAL JOIN BookPrices \
         WHERE CopyID={copyID} \
         ORDER BY DateSet DESC')
     row_headers = [x[0] for x in cursor.description]
@@ -91,8 +91,6 @@ def get_copy_pricess(copyID):
     the_response.status_code = 200
     the_response.mimetype = 'application/json'
     return the_response
-
-############################################################
 
 # add a book to the db
 @inventory.route('/inventory', methods=['POST'])
