@@ -3,16 +3,16 @@ import json
 from src import db
 
 
-books = Blueprint('books', __name__)
+inventory = Blueprint('inventory', __name__)
 
-# Get all books from the DB
-@books.route('/books', methods=['GET'])
-def get_books():
+# Get all inventory from the DB
+@inventory.route('/inventory', methods=['GET'])
+def get_inventory():
     cursor = db.get_db().cursor()
     cursor.execute(
-        'SELECT BookID, Title, AuthorFirstName, AuthorLastName, \
-        From Books \
-        ORDER BY BookID')
+        'SELECT CopyID, BookID, Sale, \
+        From Inventory \
+        ORDER BY CopyID')
     row_headers = [x[0] for x in cursor.description]
     json_data = []
     theData = cursor.fetchall()
@@ -24,15 +24,25 @@ def get_books():
     return the_response
 
 # Get book detail for book with particular bookID
-@books.route('/books/<bookID>', methods=['GET'])
-def get_book(bookID):
+@inventory.route('/inventory/<copyID>', methods=['GET'])
+def get_copy(copyID):
     cursor = db.get_db().cursor()
     cursor.execute(
-        f'SELECT BookID, Title, Year, AuthorFirstName, AuthorLastName, GenreName, Publisher \
-        From Books \
-        NATURAL JOIN Genre \
-        NATURAL JOIN Publisher \
-        WHERE bookID={bookID}')
+        f'SELECT BookID, Title, currentI.CopyID, Price, COUNT(Inventory_Curses.CurseID) as NumCurses \
+        FROM Inventory_Curses \
+        RIGHT OUTER JOIN (SELECT BookID, Title, Inventory.CopyID, Price \
+            FROM Books \
+            NATURAL JOIN Inventory \
+            JOIN (SELECT CopyID, Price \
+                FROM BookPrices \
+                JOIN (SELECT CopyID as cID, MAX(BookPrices.DateSet) as ds \
+                FROM BookPrices \
+                GROUP BY CopyID) as c \
+                ON CopyID=cID AND ds=DateSet) as p \
+            ON Inventory.CopyID=p.CopyID) as currentI \
+        ON Inventory_Curses.CopyID=currentI.CopyID \
+        GROUP BY currentI.CopyID \
+        HAVING CopyID = {copyID}')
     row_headers = [x[0] for x in cursor.description]
     json_data = []
     theData = cursor.fetchall()
@@ -42,6 +52,28 @@ def get_book(bookID):
     the_response.status_code = 200
     the_response.mimetype = 'application/json'
     return the_response
+
+@inventory.route('/inventory/<copyID>/curses', methods=['GET'])
+def get_copy_curses(copyID):
+    cursor = db.get_db().cursor()
+    cursor.execute(
+        f'SELECT CurseID, Name, DangerLevel, Description \
+        FROM Inventory_Curses \
+        NATURAL JOIN Inventory \
+        NATURAL JOIN Curses \
+        WHERE CopyID = {copyID} \
+        ORDER BY DangerLevel DESC')
+    row_headers = [x[0] for x in cursor.description]
+    json_data = []
+    theData = cursor.fetchall()
+    for row in theData:
+        json_data.append(dict(zip(row_headers, row)))
+    the_response = make_response(jsonify(json_data))
+    the_response.status_code = 200
+    the_response.mimetype = 'application/json'
+    return the_response
+
+############################################################
 
 # add a book to the db
 @books.route('/books', methods=['POST'])
