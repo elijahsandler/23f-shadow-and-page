@@ -10,7 +10,7 @@ books = Blueprint('books', __name__)
 def get_books():
     cursor = db.get_db().cursor()
     cursor.execute(
-        'SELECT BookID, Title, AuthorFirstName, AuthorLastName, \
+        'SELECT `BookID`, `Title`, `AuthorFirstName`, `AuthorLastName` \
         From Books \
         ORDER BY BookID')
     row_headers = [x[0] for x in cursor.description]

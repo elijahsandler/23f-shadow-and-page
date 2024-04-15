@@ -10,7 +10,7 @@ inventory = Blueprint('inventory', __name__)
 def get_inventory():
     cursor = db.get_db().cursor()
     cursor.execute(
-        'SELECT CopyID, BookID, Sale, \
+        'SELECT CopyID, BookID, Sale \
         From Inventory \
         ORDER BY CopyID')
     row_headers = [x[0] for x in cursor.description]
@@ -75,77 +75,77 @@ def get_copy_curses(copyID):
 
 ############################################################
 
-# add a book to the db
-@books.route('/books', methods=['POST'])
-def add_new_book():
+# # add a book to the db
+# @books.route('/books', methods=['POST'])
+# def add_new_book():
     
-    # collecting data from the request object 
-    the_data = request.json
-    current_app.logger.info(the_data)
+#     # collecting data from the request object 
+#     the_data = request.json
+#     current_app.logger.info(the_data)
 
-    #extracting the variable
-    book_id = the_data['book_id']
-    title = the_data['book_title']
-    year = the_data['book_year']
-    firstname = the_data['book_authorfirstname']
-    lastname = the_data['book_authorlastname']
-    genre_id = the_data['genre_id']
-    publisher_id = the_data['publisher_id']
+#     #extracting the variable
+#     book_id = the_data['book_id']
+#     title = the_data['book_title']
+#     year = the_data['book_year']
+#     firstname = the_data['book_authorfirstname']
+#     lastname = the_data['book_authorlastname']
+#     genre_id = the_data['genre_id']
+#     publisher_id = the_data['publisher_id']
 
-    # # Constructing the query
-    query = f"insert into books (bookid, title, year, authorfirstname, authorlastname, \
-        genreid, publisherid) values ('{book_id}', '{title}', '{year}', '{firstname}', '{lastname}', \
-        '{genre_id}', '{publisher_id}')"
+#     # # Constructing the query
+#     query = f"insert into books (bookid, title, year, authorfirstname, authorlastname, \
+#         genreid, publisherid) values ('{book_id}', '{title}', '{year}', '{firstname}', '{lastname}', \
+#         '{genre_id}', '{publisher_id}')"
 
-    # executing and committing the insert statement 
-    cursor = db.get_db().cursor()
-    cursor.execute(query)
-    db.get_db().commit()
+#     # executing and committing the insert statement 
+#     cursor = db.get_db().cursor()
+#     cursor.execute(query)
+#     db.get_db().commit()
     
-    return 'Success!'
+#     return 'Success!'
 
-@books.route('/books', methods=['PUT'])
-def update_book():
-    # collecting data from the request object 
-    the_data = request.json
-    current_app.logger.info(the_data)
+# @books.route('/books', methods=['PUT'])
+# def update_book():
+#     # collecting data from the request object 
+#     the_data = request.json
+#     current_app.logger.info(the_data)
 
-    #extracting the variable
-    book_id = the_data['book_id']
-    title = the_data['book_title']
-    year = the_data['book_year']
-    firstname = the_data['book_authorfirstname']
-    lastname = the_data['book_authorlastname']
-    genre_id = the_data['genre_id']
-    publisher_id = the_data['publisher_id']
+#     #extracting the variable
+#     book_id = the_data['book_id']
+#     title = the_data['book_title']
+#     year = the_data['book_year']
+#     firstname = the_data['book_authorfirstname']
+#     lastname = the_data['book_authorlastname']
+#     genre_id = the_data['genre_id']
+#     publisher_id = the_data['publisher_id']
 
-    # Constructing the query
-    query = f'update books set `GenreID` = "{genre_id}", `Title` = "{title}",\
-          `Year` = {year}, `AuthorFirstName` = "{firstname}", `AuthorLastName` = "{lastname}", \
-            `PublisherID` = "{publisher_id}" where `BookID` = {book_id}'
-    current_app.logger.info(query)
+#     # Constructing the query
+#     query = f'update books set `GenreID` = "{genre_id}", `Title` = "{title}",\
+#           `Year` = {year}, `AuthorFirstName` = "{firstname}", `AuthorLastName` = "{lastname}", \
+#             `PublisherID` = "{publisher_id}" where `BookID` = {book_id}'
+#     current_app.logger.info(query)
 
-    # executing and committing the update statement 
-    cursor = db.get_db().cursor()
-    cursor.execute(query)
-    db.get_db().commit()
+#     # executing and committing the update statement 
+#     cursor = db.get_db().cursor()
+#     cursor.execute(query)
+#     db.get_db().commit()
     
-    return 'Success!'
+#     return 'Success!'
 
-# remove a book from the database
-@books.route('/books', methods=['DELETE'])
-def remove_book():
-    the_data = request.json
-    current_app.logger.info(the_data)
+# # remove a book from the database
+# @books.route('/books', methods=['DELETE'])
+# def remove_book():
+#     the_data = request.json
+#     current_app.logger.info(the_data)
 
-    book_id = the_data['book_id']
+#     book_id = the_data['book_id']
 
-    query = f'delete from books where `BookID`={book_id}'
-    current_app.logger.info(query)
+#     query = f'delete from books where `BookID`={book_id}'
+#     current_app.logger.info(query)
 
-    # executing and committing the update statement 
-    cursor = db.get_db().cursor()
-    cursor.execute(query)
-    db.get_db().commit()
+#     # executing and committing the update statement 
+#     cursor = db.get_db().cursor()
+#     cursor.execute(query)
+#     db.get_db().commit()
     
-    return 'Success!'
+#     return 'Success!'
