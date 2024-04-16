@@ -56,11 +56,11 @@ def add_new_curse():
     current_app.logger.info(the_data)
 
     #extracting the variable
-    name = the_data['name']
-    effect = the_data['effect']
-    dangerlevel = the_data['dangerlevel']
-    description = the_data['description']
-    countercurse = the_data['countercurse']
+    name = the_data['Name']
+    effect = the_data['Effect']
+    dangerlevel = the_data['DangerLevel']
+    description = the_data['Description']
+    countercurse = the_data['Countercurse']
 
     # # Constructing the query
     query = f"insert into books (bookid, title, year, authorfirstname, authorlastname, \
@@ -95,7 +95,7 @@ def remove_curse():
 
 # map of names to curseID for sasha :)
 @curses.route('/map', methods=['GET'])
-def get_book_map():
+def get_curses_map():
     cursor = db.get_db().cursor()
     cursor.execute(
         'SELECT `CurseId`, `Name` \
