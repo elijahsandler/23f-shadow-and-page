@@ -53,14 +53,13 @@ def get_copy(copyID):
     the_response.mimetype = 'application/json'
     return the_response
 
-# Get book detail for book with particular bookID
+# Get all current stock
 @inventory.route('/current-stock', methods=['GET'])
 def get_stock():
     cursor = db.get_db().cursor()
     cursor.execute(
-        f'SELECT BookID, Title, currentI.CopyID, Price, MAX(DangerLevel) as HighestCurse, COUNT(Inventory_Curses.CurseID) as NumCurses \
+        f'SELECT BookID, Title, currentI.CopyID, Price, COUNT(Inventory_Curses.CurseID) as NumCurses \
         FROM Inventory_Curses \
-        JOIN Curses ON Inventory_Curses.CurseID=Curses.CurseID \
         RIGHT OUTER JOIN (SELECT BookID, Title, Inventory.CopyID, Price \
             FROM Books \
             NATURAL JOIN Inventory \
@@ -70,7 +69,8 @@ def get_stock():
                 FROM BookPrices \
                 GROUP BY CopyID) as c \
                 ON CopyID=cID AND ds=DateSet) as p \
-            ON Inventory.CopyID=p.CopyID) as currentI \
+                ON Inventory.CopyID=p.CopyID \
+                WHERE Sale IS NULL) as currentI \
         ON Inventory_Curses.CopyID=currentI.CopyID \
         GROUP BY currentI.CopyID')
     row_headers = [x[0] for x in cursor.description]
@@ -148,9 +148,6 @@ def remove_curse(copyID):
     db.get_db().commit()
     
     return 'Success!'
-
-
-
 
 
 @inventory.route('/inventory/<copyID>/price', methods=['GET'])
