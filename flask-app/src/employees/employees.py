@@ -24,26 +24,6 @@ def get_employees():
     the_response.mimetype = 'application/json'
     return the_response
 
-# Get employees detail for employees with particular EmployeeID
-@employees.route('/employees/<employeesID>', methods=['GET'])
-def get_employees(employeesID):
-    cursor = db.get_db().cursor()
-    cursor.execute(
-        f"SELECT EmployeeID, ManagerID, FirstName, LastName, \
-            Position, Email, HireDate, AccessLevel \
-        FROM Employees \
-        WHERE EmployeeID = '{employeesID}' \
-        ORDER BY EmployeeID")
-    row_headers = [x[0] for x in cursor.description]
-    json_data = []
-    theData = cursor.fetchall()
-    for row in theData:
-        json_data.append(dict(zip(row_headers, row)))
-    the_response = make_response(jsonify(json_data))
-    the_response.status_code = 200
-    the_response.mimetype = 'application/json'
-    return the_response
-
 # add a employees to the db
 @employees.route('/employees', methods=['POST'])
 def add_new_employees():
