@@ -28,3 +28,32 @@ def get_curses():
     the_response.status_code = 200
     the_response.mimetype = 'application/json'
     return the_response
+
+
+# add a book to the db
+@curses.route('/curses', methods=['POST'])
+def add_new_curse():
+    
+    # collecting data from the request object 
+    the_data = request.json
+    current_app.logger.info(the_data)
+
+    #extracting the variable
+    curseid = the_data['curseid']
+    name = the_data['name']
+    effect = the_data['effect']
+    dangerlevel = the_data['dangerlevel']
+    description = the_data['description']
+    countercurse = the_data['countercurse']
+
+    # # Constructing the query
+    query = f"insert into books (bookid, title, year, authorfirstname, authorlastname, \
+        genreid, publisherid) values ('{curseid}', '{name}', {effect}, '{dangerlevel}', '{description}', \
+        {countercurse})"
+
+    # executing and committing the insert statement 
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    db.get_db().commit()
+    
+    return 'Success!'
