@@ -6,9 +6,8 @@ from src import db
 curses = Blueprint('curses', __name__)
 
 # Get all inventory from the DB
-# ELI
-@curses.route('/curses', methods=['GET'])
-def get_curses():
+@curses.route('/curse-count', methods=['GET'])
+def get_curses_count():
     cursor = db.get_db().cursor()
     cursor.execute(
         'SELECT Curses.Name, COUNT(Curses.CurseID) AS NumCurses\
@@ -30,6 +29,24 @@ def get_curses():
     return the_response
 
 
+@curses.route('/curses', methods=['GET'])
+def get_curses():
+    cursor = db.get_db().cursor()
+    cursor.execute(
+        'SELECT * FROM Curses')
+    row_headers = [x[0] for x in cursor.description]
+    json_data = []
+    theData = cursor.fetchall()
+    for row in theData:
+        json_data.append(dict(zip(row_headers, row)))
+    the_response = make_response(jsonify(json_data))
+    the_response.status_code = 200
+    the_response.mimetype = 'application/json'
+    return the_response
+
+
+
+
 # add a book to the db
 @curses.route('/curses', methods=['POST'])
 def add_new_curse():
@@ -39,7 +56,6 @@ def add_new_curse():
     current_app.logger.info(the_data)
 
     #extracting the variable
-    curseid = the_data['curseid']
     name = the_data['name']
     effect = the_data['effect']
     dangerlevel = the_data['dangerlevel']
@@ -48,7 +64,7 @@ def add_new_curse():
 
     # # Constructing the query
     query = f"insert into books (bookid, title, year, authorfirstname, authorlastname, \
-        genreid, publisherid) values ('{curseid}', '{name}', {effect}, '{dangerlevel}', '{description}', \
+        genreid, publisherid) values ('{name}', {effect}, '{dangerlevel}', '{description}', \
         {countercurse})"
 
     # executing and committing the insert statement 
@@ -57,6 +73,7 @@ def add_new_curse():
     db.get_db().commit()
     
     return 'Success!'
+
 
 @curses.route('/curses', methods=['DELETE'])
 def remove_curse():
@@ -74,3 +91,22 @@ def remove_curse():
     db.get_db().commit()
     
     return 'Success!'
+
+
+# map of names to curseID for sasha :)
+@curses.route('/map', methods=['GET'])
+def get_book_map():
+    cursor = db.get_db().cursor()
+    cursor.execute(
+        'SELECT `CurseId`, `Name` \
+        From Curses \
+        ORDER BY Name ASC')
+    row_headers = [x[0] for x in cursor.description]
+    json_data = []
+    theData = cursor.fetchall()
+    for row in theData:
+        json_data.append(dict(zip(row_headers, row)))
+    the_response = make_response(jsonify(json_data))
+    the_response.status_code = 200
+    the_response.mimetype = 'application/json'
+    return the_response
