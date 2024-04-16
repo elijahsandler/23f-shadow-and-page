@@ -21,19 +21,19 @@ CREATE TABLE Employees (
 );
 
 CREATE TABLE Department (
-    DepartmentID INT PRIMARY KEY,
+    DepartmentID INT PRIMARY KEY AUTO_INCREMENT,
     DepartmentName VARCHAR(100),
     ManagerID CHAR(10),
     FOREIGN KEY (ManagerID) REFERENCES Employees(EmployeeID) ON UPDATE CASCADE
 );
 
 CREATE TABLE Genre(
-    GenreID INT PRIMARY KEY,
+    GenreID INT PRIMARY KEY AUTO_INCREMENT,
     GenreName VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE Publisher(
-    PublisherID INT PRIMARY KEY,
+    PublisherID INT PRIMARY KEY AUTO_INCREMENT,
     Publisher VARCHAR(100) NOT NULL
 );
 
@@ -52,14 +52,14 @@ CREATE INDEX authorName ON Books(AuthorLastName);
 CREATE INDEX bookTitle ON Books(Title);
 
 CREATE TABLE Customers (
-    CustomerID INT PRIMARY KEY,
+    CustomerID INT PRIMARY KEY AUTO_INCREMENT,
     FirstName VARCHAR(100),
     LastName VARCHAR(100),
     Email VARCHAR(100)
 );
 
 CREATE TABLE Sales(
-    SaleID INT PRIMARY KEY,
+    SaleID INT PRIMARY KEY AUTO_INCREMENT,
     Date DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
     Customer INT NOT NULL,
     Employee CHAR(10) NOT NULL,
@@ -70,8 +70,6 @@ CREATE TABLE Sales(
 CREATE TABLE Inventory (
     BookID VARCHAR(15),
     CopyID INT PRIMARY KEY AUTO_INCREMENT,
-    Cursed TINYINT(1),
-    CurrentPrice FLOAT,
     Sale INT DEFAULT NULL,
     FOREIGN KEY (BookID) REFERENCES Books(BookID) ON UPDATE CASCADE,
     FOREIGN KEY (Sale) REFERENCES Sales(SaleID) ON UPDATE CASCADE
@@ -86,14 +84,14 @@ CREATE TABLE BookPrices(
 );
 
 CREATE TABLE CounterCurses(
-    CounterID INT PRIMARY KEY,
+    CounterID INT PRIMARY KEY AUTO_INCREMENT,
     Name VARCHAR(50),
     Instructions TEXT NOT NULL
 );
 CREATE INDEX ccName ON CounterCurses(Name);
 
 CREATE TABLE Curses(
-    CurseID INT PRIMARY KEY,
+    CurseID INT PRIMARY KEY AUTO_INCREMENT,
     Name VARCHAR(50) UNIQUE,
     Effect VARCHAR(100),
     DangerLevel TINYINT(3) NOT NULL,
@@ -104,7 +102,7 @@ CREATE TABLE Curses(
 CREATE INDEX curseName ON Curses(Name);
 
 CREATE TABLE Projects(
-    ProjectID INT PRIMARY KEY,
+    ProjectID INT PRIMARY KEY AUTO_INCREMENT,
     ProjectName VARCHAR(100) NOT NULL UNIQUE
 );
 
