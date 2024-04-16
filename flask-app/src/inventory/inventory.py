@@ -94,7 +94,7 @@ def get_stock():
 def get_copy_curses(copyID):
     cursor = db.get_db().cursor()
     cursor.execute(
-        f'SELECT CurseID, Name, DangerLevel, Description \
+        f'SELECT CurseID, Name, Effect, DangerLevel, Description \
         FROM Inventory_Curses \
         NATURAL JOIN Inventory \
         NATURAL JOIN Curses \
