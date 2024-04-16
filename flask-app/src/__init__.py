@@ -45,7 +45,7 @@ def create_app():
     app.register_blueprint(inventory, url_prefix = '/i')
     app.register_blueprint(sales, url_prefix = '/s')
     app.register_blueprint(curses, url_prefix = '/c')
-    app.regsiter_blueprint(employees, url_prefix = '/e')
+    app.register_blueprint(employees, url_prefix = '/e')
 
 
 
