@@ -44,9 +44,9 @@ def get_employees(employeesID):
     the_response.mimetype = 'application/json'
     return the_response
 
-# add a book to the db
+# add a employees to the db
 @employees.route('/employees', methods=['POST'])
-def add_new_book():
+def add_new_employees():
     
     # collecting data from the request object 
     the_data = request.json
@@ -75,8 +75,8 @@ def add_new_book():
     
     return 'Success!'
 
-@books.route('/employees', methods=['PUT'])
-def update_book():
+@employees.route('/employees', methods=['PUT'])
+def update_employees():
     # collecting data from the request object 
     the_data = request.json
     current_app.logger.info(the_data)
@@ -106,7 +106,7 @@ def update_book():
 
 # remove an employees from the database
 @employees.route('/employees', methods=['DELETE'])
-def remove_book():
+def remove_employees():
     the_data = request.json
     current_app.logger.info(the_data)
 
