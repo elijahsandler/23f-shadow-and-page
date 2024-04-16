@@ -13,8 +13,7 @@ def get_sales():
     cursor = db.get_db().cursor()
     cursor.execute(
         'SELECT SaleID, Employee \
-        From Sales \
-        ORDER BY SaleID')
+        From Sales;')
     row_headers = [x[0] for x in cursor.description]
     json_data = []
     theData = cursor.fetchall()
@@ -24,3 +23,5 @@ def get_sales():
     the_response.status_code = 200
     the_response.mimetype = 'application/json'
     return the_response
+
+
