@@ -63,8 +63,8 @@ def add_new_curse():
     countercurse = the_data['Countercurse']
 
     # # Constructing the query
-    query = f"insert into books (bookid, title, year, authorfirstname, authorlastname, \
-        genreid, publisherid) values ('{name}', {effect}, '{dangerlevel}', '{description}', \
+    query = f"insert into curses (name, effect, dangerlevel, description, \
+        countercurse) values ('{name}', {effect}, '{dangerlevel}', '{description}', \
         {countercurse})"
 
     # executing and committing the insert statement 
