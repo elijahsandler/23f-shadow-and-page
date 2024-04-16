@@ -61,8 +61,8 @@ def get_copy(copyID):
 def get_stock():
     cursor = db.get_db().cursor()
     cursor.execute(
-        f'SELECT BookID, Title, currentI.CopyID, Price, COUNT(Inventory_Curses.CurseID) as NumCurses \
-        FROM Inventory_Curses \
+        f'SELECT BookID, Title, currentI.CopyID, Price, MAX(Curses.DangerLevel) as HighestCurse, COUNT(ic.CurseID) as NumCurses \
+        FROM Inventory_Curses as ic \
         RIGHT OUTER JOIN (SELECT BookID, Title, Inventory.CopyID, Price \
             FROM Books \
             NATURAL JOIN Inventory \
@@ -74,7 +74,8 @@ def get_stock():
                 ON CopyID=cID AND ds=DateSet) as p \
                 ON Inventory.CopyID=p.CopyID \
                 WHERE Sale IS NULL) as currentI \
-        ON Inventory_Curses.CopyID=currentI.CopyID \
+        ON ic.CopyID=currentI.CopyID \
+        LEFT OUTER JOIN Curses ON ic.CurseID = Curses.CurseID \
         GROUP BY currentI.CopyID')
     row_headers = [x[0] for x in cursor.description]
     json_data = []
