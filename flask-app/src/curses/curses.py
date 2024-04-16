@@ -7,7 +7,7 @@ curses = Blueprint('curses', __name__)
 
 # Get all inventory from the DB
 # ELI
-@curses.route('/inventory', methods=['GET'])
+@curses.route('/curses', methods=['GET'])
 def get_curses():
     cursor = db.get_db().cursor()
     cursor.execute(
