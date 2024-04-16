@@ -53,6 +53,39 @@ def get_copy(copyID):
     the_response.mimetype = 'application/json'
     return the_response
 
+# Get book detail for book with particular bookID
+@inventory.route('/current-stock', methods=['GET'])
+def get_stock():
+    cursor = db.get_db().cursor()
+    cursor.execute(
+        f'SELECT BookID, Title, currentI.CopyID, Price, MAX(DangerLevel) as HighestCurse, COUNT(Inventory_Curses.CurseID) as NumCurses \
+        FROM Inventory_Curses \
+        JOIN Curses ON Inventory_Curses.CurseID=Curses.CurseID \
+        RIGHT OUTER JOIN (SELECT BookID, Title, Inventory.CopyID, Price \
+            FROM Books \
+            NATURAL JOIN Inventory \
+            JOIN (SELECT CopyID, Price \
+                FROM BookPrices \
+                JOIN (SELECT CopyID as cID, MAX(BookPrices.DateSet) as ds \
+                FROM BookPrices \
+                GROUP BY CopyID) as c \
+                ON CopyID=cID AND ds=DateSet) as p \
+            ON Inventory.CopyID=p.CopyID) as currentI \
+        ON Inventory_Curses.CopyID=currentI.CopyID \
+        GROUP BY currentI.CopyID')
+    row_headers = [x[0] for x in cursor.description]
+    json_data = []
+    theData = cursor.fetchall()
+    for row in theData:
+        json_data.append(dict(zip(row_headers, row)))
+    the_response = make_response(jsonify(json_data))
+    the_response.status_code = 200
+    the_response.mimetype = 'application/json'
+    return the_response
+
+
+
+
 @inventory.route('/inventory/<copyID>/curses', methods=['GET'])
 def get_copy_curses(copyID):
     cursor = db.get_db().cursor()
@@ -72,6 +105,53 @@ def get_copy_curses(copyID):
     the_response.status_code = 200
     the_response.mimetype = 'application/json'
     return the_response
+
+@inventory.route('/inventory/<copyID>/curses', methods=['POST'])
+def add_new_curse(copyID):
+    
+    # collecting data from the request object 
+    the_data = request.json
+    current_app.logger.info(the_data)
+
+    #extracting the variable
+    curse_id = the_data['curse_id']
+
+    # # Constructing the query
+    query = f"insert into inventory_curses (CopyID, CurseID) \
+        values ('{copyID}', {curse_id})"
+
+    # executing and committing the post statement 
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    db.get_db().commit()
+    
+    return 'Success!'
+
+
+@inventory.route('/inventory/<copyID>/curses', methods=['DELETE'])
+def remove_curse(copyID):
+    
+    # collecting data from the request object 
+    the_data = request.json
+    current_app.logger.info(the_data)
+
+    #extracting the variable
+    curse_id = the_data['curse_id']
+
+    # # Constructing the query
+    query = f"delete from inventory_curses \
+        where `CopyID`={copyID} AND `CurseID`={curse_id}"
+
+    # executing and committing the delete statement 
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    db.get_db().commit()
+    
+    return 'Success!'
+
+
+
+
 
 @inventory.route('/inventory/<copyID>/price', methods=['GET'])
 def get_copy_pricess(copyID):
