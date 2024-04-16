@@ -11,7 +11,7 @@ curses = Blueprint('curses', __name__)
 def get_curses():
     cursor = db.get_db().cursor()
     cursor.execute(
-        'SELECT Curses.Name, COUNT(Curses.CurseID)\
+        'SELECT Curses.Name, COUNT(Curses.CurseID) AS NumCurses\
         FROM Curses \
             JOIN Inventory_Curses \
                 ON Curses.CurseID = Inventory_Curses.CurseID\
@@ -52,6 +52,23 @@ def add_new_curse():
         {countercurse})"
 
     # executing and committing the insert statement 
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    db.get_db().commit()
+    
+    return 'Success!'
+
+@curses.route('/curses', methods=['DELETE'])
+def remove_curse():
+    the_data = request.json
+    current_app.logger.info(the_data)
+
+    curseid = the_data['curseid']
+
+    query = f'delete from curses where `CurseID`={curseid}'
+    current_app.logger.info(query)
+
+    # executing and committing the update statement 
     cursor = db.get_db().cursor()
     cursor.execute(query)
     db.get_db().commit()
