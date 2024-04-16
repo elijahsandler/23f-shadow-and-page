@@ -6,6 +6,7 @@ from src import db
 inventory = Blueprint('inventory', __name__)
 
 # Get all inventory from the DB
+# ELI
 @inventory.route('/inventory', methods=['GET'])
 def get_inventory():
     cursor = db.get_db().cursor()
@@ -24,6 +25,7 @@ def get_inventory():
     return the_response
 
 # Get book detail for book with particular bookID
+# ELI
 @inventory.route('/inventory/<copyID>', methods=['GET'])
 def get_copy(copyID):
     cursor = db.get_db().cursor()
@@ -54,6 +56,7 @@ def get_copy(copyID):
     return the_response
 
 # Get all current stock
+# ELI
 @inventory.route('/current-stock', methods=['GET'])
 def get_stock():
     cursor = db.get_db().cursor()
@@ -85,7 +88,7 @@ def get_stock():
 
 
 
-
+# ELI
 @inventory.route('/inventory/<copyID>/curses', methods=['GET'])
 def get_copy_curses(copyID):
     cursor = db.get_db().cursor()
@@ -106,6 +109,8 @@ def get_copy_curses(copyID):
     the_response.mimetype = 'application/json'
     return the_response
 
+
+# ELI
 @inventory.route('/inventory/<copyID>/curses', methods=['POST'])
 def add_new_curse(copyID):
     
@@ -116,7 +121,7 @@ def add_new_curse(copyID):
     #extracting the variable
     curse_id = the_data['curse_id']
 
-    # # Constructing the query
+    # Constructing the query
     query = f"insert into inventory_curses (CopyID, CurseID) \
         values ('{copyID}', {curse_id})"
 
@@ -127,7 +132,7 @@ def add_new_curse(copyID):
     
     return 'Success!'
 
-
+# ELI
 @inventory.route('/inventory/<copyID>/curses', methods=['DELETE'])
 def remove_curse(copyID):
     
@@ -149,7 +154,7 @@ def remove_curse(copyID):
     
     return 'Success!'
 
-
+# ElI
 @inventory.route('/inventory/<copyID>/price', methods=['GET'])
 def get_copy_pricess(copyID):
     cursor = db.get_db().cursor()
@@ -169,6 +174,8 @@ def get_copy_pricess(copyID):
     the_response.mimetype = 'application/json'
     return the_response
 
+
+# ELI
 @inventory.route('/inventory/<copyID>/price', methods=['POST'])
 def add_new_price(copyID):
     
@@ -190,6 +197,8 @@ def add_new_price(copyID):
     
     return 'Success!'
 
+
+# ElI
 # add a book to the db
 @inventory.route('/inventory', methods=['POST'])
 def add_new_copy():
@@ -212,6 +221,7 @@ def add_new_copy():
     
     return 'Success!'
 
+# ELI
 @inventory.route('/inventory', methods=['PUT'])
 def update_copy():
     # collecting data from the request object 
@@ -233,6 +243,7 @@ def update_copy():
     
     return 'Success!'
 
+# ELI
 # remove a copy from the database
 @inventory.route('/inventory', methods=['DELETE'])
 def remove_copy():
