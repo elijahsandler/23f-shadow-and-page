@@ -81,7 +81,7 @@ def get_copy_pricess(copyID):
         FROM Inventory \
         NATURAL JOIN BookPrices \
         WHERE CopyID={copyID} \
-        ORDER BY DateSet DESC')
+        ORDER BY DateSet ASC')
     row_headers = [x[0] for x in cursor.description]
     json_data = []
     theData = cursor.fetchall()
@@ -91,6 +91,27 @@ def get_copy_pricess(copyID):
     the_response.status_code = 200
     the_response.mimetype = 'application/json'
     return the_response
+
+@inventory.route('/inventory/<copyID>/price', methods=['POST'])
+def add_new_price(copyID):
+    
+    # collecting data from the request object 
+    the_data = request.json
+    current_app.logger.info(the_data)
+
+    #extracting the variable
+    price = the_data['price']
+
+    # # Constructing the query
+    query = f"insert into bookprices (CopyID, Price) \
+        values ('{copyID}', {price})"
+
+    # executing and committing the insert statement 
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    db.get_db().commit()
+    
+    return 'Success!'
 
 # add a book to the db
 @inventory.route('/inventory', methods=['POST'])
