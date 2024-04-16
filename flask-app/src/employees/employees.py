@@ -32,7 +32,7 @@ def get_employees(employeesID):
         f"SELECT EmployeeID, ManagerID, FirstName, LastName, \
             Position, Email, HireDate, AccessLevel \
         FROM Employees \
-        WHERE EmployeeID = '{employeesID}'
+        WHERE EmployeeID = '{employeesID}' \
         ORDER BY EmployeeID")
     row_headers = [x[0] for x in cursor.description]
     json_data = []
