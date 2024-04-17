@@ -24,9 +24,13 @@ def get_sales():
 
 
 @sales.route('/sales/<saleID>', methods=['GET'])
-def get_sale(saleID):
+def get_sale_details(saleID):
     cursor = db.get_db().cursor()
-    cursor.execute(f"select * from Sales where SaleID = {saleID}")
+    cursor.execute(f"SELECT * FROM Sales
+                    JOIN Inventory ON Sales.SaleID = Inventory.Sale \
+                    JOIN Customers ON Sales.Customer = Customers.CustomerID \
+                    JOIN Employees ON Sales.Employee = Employees.EmployeeID \
+                    WHERE Sales.saleID = {saleID}")
     row_headers = [x[0] for x in cursor.description]
     json_data = []
     theData = cursor.fetchall()
@@ -55,6 +59,4 @@ def get_top_x_sales():
     the_response.mimetype = 'application/json'
     return the_response
     
-
-
 
