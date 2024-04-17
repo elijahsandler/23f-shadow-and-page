@@ -68,10 +68,10 @@ def add_new_employees():
                 {firstname}, '{lastname}', '{position}', \
         {email}, {hiredate}, {accesslevel})"
 """
-   # Constructing the query with parameterized values
-    query = "INSERT INTO Employees (EmployeeID, ManagerID, FirstName, \
+    # Constructing the query with parameterized values
+    query = "INSERT INTO Employees (EmployeeID, ManagerID, FirstName, \
     LastName, Position, Email, HireDate, AccessLevel) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
-    values = (employee_id, manager_id, firstname, lastname, position, email, hiredate, accesslevel)
+    values = (employee_id, manager_id, firstname, lastname, position, email, hiredate, accesslevel)
 
     # executing and committing the insert statement 
     cursor = db.get_db().cursor()
