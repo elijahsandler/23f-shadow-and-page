@@ -25,7 +25,7 @@ def get_employees():
     return the_response
 
 # Get the number of employees working each position the DB
-@employees.route('/employees', methods=['GET'])
+@employees.route('/numemployees', methods=['GET'])
 def get_employee_positions():
     cursor = db.get_db().cursor()
     cursor.execute(
