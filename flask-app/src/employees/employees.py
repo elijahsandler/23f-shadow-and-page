@@ -55,8 +55,8 @@ def add_new_employees():
     # extracting the variable
     employee_id = the_data['employee_id']
     manager_id = the_data['manager_id']
-    firstname = the_data['employee_firstname']
-    lastname = the_data['employee_lastname']
+    firstname = the_data['firstname']
+    lastname = the_data['lastname']
     position = the_data['position']
     email = the_data['email']
     hiredate = the_data['hiredate']
@@ -64,11 +64,12 @@ def add_new_employees():
 
     # Constructing the query with parameterized values
     query = "INSERT INTO Employees (EmployeeID, ManagerID, FirstName, LastName, Position, Email, HireDate, AccessLevel) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
-    cursor.execute(query, (employee_id, manager_id, firstname, lastname, position, email, hiredate, accesslevel))
+    
 
     # executing and committing the insert statement 
     cursor = db.get_db().cursor()
-    cursor.execute(query)
+    #cursor.execute(query)
+    cursor.execute(query, (employee_id, manager_id, firstname, lastname, position, email, hiredate, accesslevel))
     db.get_db().commit()
     
     return 'Success!'
