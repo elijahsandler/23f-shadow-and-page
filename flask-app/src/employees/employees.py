@@ -62,13 +62,13 @@ def add_new_employees():
     hiredate = the_data['hiredate']
     accesslevel = the_data['accesslevel']
 
-"    # # Constructing the query
+"""    # # Constructing the query
     query = f"insert into Employees (EmployeeID, ManagerID, FirstName, LastName, \
             Position, Email, HireDate, AccessLevel) values ('{employee_id}', '{manager_id}', \
                 {firstname}, '{lastname}', '{position}', \
         {email}, {hiredate}, {accesslevel})"
-"
-    # Constructing the query with parameterized values
+"""
+   # Constructing the query with parameterized values
     query = "INSERT INTO Employees (EmployeeID, ManagerID, FirstName, \
     LastName, Position, Email, HireDate, AccessLevel) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
     values = (employee_id, manager_id, firstname, lastname, position, email, hiredate, accesslevel)
