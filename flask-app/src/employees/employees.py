@@ -69,8 +69,7 @@ def add_new_employees():
         {email}, {hiredate}, {accesslevel})"
 """
     # Constructing the query with parameterized values
-    query = "INSERT INTO Employees (EmployeeID, ManagerID, FirstName, \
-    LastName, Position, Email, HireDate, AccessLevel) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
+    query = "INSERT INTO Employees (EmployeeID, ManagerID, FirstName, LastName, Position, Email, HireDate, AccessLevel) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
     values = (employee_id, manager_id, firstname, lastname, position, email, hiredate, accesslevel)
 
     # executing and committing the insert statement 
