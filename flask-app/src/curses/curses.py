@@ -10,7 +10,7 @@ curses = Blueprint('curses', __name__)
 def get_curses_count():
     cursor = db.get_db().cursor()
     cursor.execute(
-        'SELECT Curses.Name, COUNT(Curses.CurseID) AS NumCurses\
+        'SELECT Curses.Name, COUNT(Curses.CurseID) AS NumUses\
         FROM Curses \
             JOIN Inventory_Curses \
                 ON Curses.CurseID = Inventory_Curses.CurseID\
@@ -56,15 +56,16 @@ def add_new_curse():
     current_app.logger.info(the_data)
 
     #extracting the variable
+    curseid = the_data['CurseID']
     name = the_data['Name']
     effect = the_data['Effect']
     dangerlevel = the_data['DangerLevel']
     description = the_data['Description']
-    countercurse = the_data['Countercurse']
+    countercurse = the_data['CounterCurse']
 
     # # Constructing the query
-    query = f"insert into Curses (name, effect, dangerlevel, description, \
-        countercurse) values ('{name}', '{effect}', '{dangerlevel}', '{description}', \
+    query = f"insert into Curses (CurseID, Name, Effect, DangerLevel, Description, \
+        CounterCurse) values ('{curseid}', '{name}', '{effect}', '{dangerlevel}', '{description}', \
         {countercurse})"
 
     # executing and committing the insert statement 
