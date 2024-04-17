@@ -24,7 +24,7 @@ def get_employees():
     the_response.mimetype = 'application/json'
     return the_response
 
-# Get the number of employees working each position the DB
+"""# Get the number of employees working each position the DB
 @employees.route('/numemployees', methods=['GET'])
 def get_employee_positions():
     cursor = db.get_db().cursor()
@@ -43,7 +43,7 @@ def get_employee_positions():
     the_response.status_code = 200
     the_response.mimetype = 'application/json'
     return the_response
-
+"""
 # add a employees to the db
 @employees.route('/employees', methods=['POST'])
 def add_new_employees():
@@ -63,7 +63,7 @@ def add_new_employees():
     accesslevel = the_data['accesslevel']
 
     # # Constructing the query
-    query = f"insert into employees (EmployeeID, ManagerID, FirstName, LastName, \
+    query = f"insert into Employees (EmployeeID, ManagerID, FirstName, LastName, \
             Position, Email, HireDate, AccessLevel) values ('{employee_id}', '{manager_id}', \
                 {firstname}, '{lastname}', '{position}', \
         {email}, {hiredate}, {accesslevel})"
