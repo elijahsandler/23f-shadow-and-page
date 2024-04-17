@@ -117,8 +117,7 @@ def get_curses_map():
 def get_counter_curses():
     cursor = db.get_db().cursor()
     cursor.execute(
-        'SELECT * \
-        FROM countercurses')
+        'SELECT * FROM CounterCurses')
     row_headers = [x[0] for x in cursor.description]
     json_data = []
     theData = cursor.fetchall()
@@ -136,7 +135,7 @@ def get_counter_curses_count():
     cursor.execute(
         'SELECT counter_curses.Name, COUNT(counter_curses.CounterID),\
         counter_curses.Instructions \
-        FROM counter_curses \
+        FROM countercurses \
         GROUP BY (counter_curses.Name)')
     row_headers = [x[0] for x in cursor.description]
     json_data = []
