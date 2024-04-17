@@ -24,6 +24,26 @@ def get_employees():
     the_response.mimetype = 'application/json'
     return the_response
 
+# Get the number of employees working each position the DB
+@employees.route('/employees', methods=['GET'])
+def get_employee_positions():
+    cursor = db.get_db().cursor()
+    cursor.execute(
+        'SELECT `EmployeeID`, `ManagerID`, `FirstName`, `LastName`, \
+            `Position`, `Email`, `HireDate`, `AccessLevel` \
+        FROM Employees \
+        GROUP BY Position\
+        ORDER BY EmployeeID')
+    row_headers = [x[0] for x in cursor.description]
+    json_data = []
+    theData = cursor.fetchall()
+    for row in theData:
+        json_data.append(dict(zip(row_headers, row)))
+    the_response = make_response(jsonify(json_data))
+    the_response.status_code = 200
+    the_response.mimetype = 'application/json'
+    return the_response
+
 # add a employees to the db
 @employees.route('/employees', methods=['POST'])
 def add_new_employees():
