@@ -10,14 +10,35 @@ curses = Blueprint('curses', __name__)
 def get_curses_count():
     cursor = db.get_db().cursor()
     cursor.execute(
-        'SELECT Curses.Name, COUNT(Curses.CurseID) AS NumUses\
+        'SELECT Curses.CurseId, Curses.Name, COUNT(Curses.CurseID) AS NumUses\
         FROM Curses \
             JOIN Inventory_Curses \
                 ON Curses.CurseID = Inventory_Curses.CurseID\
             JOIN Inventory \
                 ON Inventory_Curses.CopyID = Inventory.CopyID\
         WHERE Sale IS NULL\
-        GROUP BY (Curses.Name)')
+        GROUP BY Curses.CurseId, Curses.Name')
+    row_headers = [x[0] for x in cursor.description]
+    json_data = []
+    theData = cursor.fetchall()
+    for row in theData:
+        json_data.append(dict(zip(row_headers, row)))
+    the_response = make_response(jsonify(json_data))
+    the_response.status_code = 200
+    the_response.mimetype = 'application/json'
+    return the_response
+
+
+@curses.route('/curses/<curseID>', methods=['GET'])
+def get_curse_inventory_info(curseID):
+    cursor = db.get_db().cursor()
+    cursor.execute(
+        f"SELECT c.CurseID, c.Name, c.DangerLevel, i.BookID, i.CopyID, i.Sale, b.Title \
+            FROM Curses c \
+                JOIN Inventory_Curses ic ON c.CurseID = ic.CurseID \
+                JOIN shadow.Inventory i on ic.CopyID = i.CopyID \
+                JOIN Books b ON i.BookID = b.BookID \
+            WHERE c.CurseID = {curseID}")
     row_headers = [x[0] for x in cursor.description]
     json_data = []
     theData = cursor.fetchall()
@@ -175,6 +196,47 @@ def get_project_info(projectID):
         JOIN Curses c ON rci.ResearchCurseID = c.CurseID \
         JOIN Employees_Projects ep on p.ProjectID = ep.ProjectID \
         WHERE p.ProjectID = {projectID}')
+    row_headers = [x[0] for x in cursor.description]
+    json_data = []
+    theData = cursor.fetchall()
+    for row in theData:
+        json_data.append(dict(zip(row_headers, row)))
+    the_response = make_response(jsonify(json_data))
+    the_response.status_code = 200
+    the_response.mimetype = 'application/json'
+    return the_response
+
+@curses.route('/employee-projects', methods=['GET'])
+def emp_projects():
+    cursor = db.get_db().cursor()
+    cursor.execute(
+        'SELECT COUNT(DISTINCT p.ProjectID) AS NumProjects,EmployeeID \
+        FROM Projects p \
+            JOIN ResearchCurseIDs rci ON p.ProjectID = rci.ProjectID \
+            JOIN Curses c ON rci.ResearchCurseID = c.CurseID \
+            JOIN Employees_Projects ep on p.ProjectID = ep.ProjectID \
+         GROUP BY EmployeeID')
+    row_headers = [x[0] for x in cursor.description]
+    json_data = []
+    theData = cursor.fetchall()
+    for row in theData:
+        json_data.append(dict(zip(row_headers, row)))
+    the_response = make_response(jsonify(json_data))
+    the_response.status_code = 200
+    the_response.mimetype = 'application/json'
+    return the_response
+
+
+@curses.route('/employee-projects/<employeeID>', methods=['GET'])
+def get_employee_project_info(employeeID):
+    cursor = db.get_db().cursor()
+    cursor.execute(
+        f"SELECT p.ProjectID, p.ProjectName, c.CurseID, Name, DangerLevel, EmployeeID, DateJoined, DateLeft \
+        FROM Projects p \
+        JOIN ResearchCurseIDs rci ON p.ProjectID = rci.ProjectID \
+        JOIN Curses c ON rci.ResearchCurseID = c.CurseID \
+        JOIN Employees_Projects ep on p.ProjectID = ep.ProjectID \
+        WHERE ep.EmployeeID = '{employeeID}'")
     row_headers = [x[0] for x in cursor.description]
     json_data = []
     theData = cursor.fetchall()
