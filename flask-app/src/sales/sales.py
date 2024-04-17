@@ -26,7 +26,7 @@ def get_sales():
 @sales.route('/sales/<saleID>', methods=['GET'])
 def get_sale_details(saleID):
     cursor = db.get_db().cursor()
-    cursor.execute(f"SELECT * FROM Sales
+    cursor.execute(f"SELECT * FROM Sales \
                     JOIN Inventory ON Sales.SaleID = Inventory.Sale \
                     JOIN Customers ON Sales.Customer = Customers.CustomerID \
                     JOIN Employees ON Sales.Employee = Employees.EmployeeID \
