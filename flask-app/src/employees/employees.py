@@ -53,7 +53,7 @@ def add_new_employees():
     current_app.logger.info(the_data)
 
     # extracting the variable
-    employee_id = the_data['employee_id']
+    employeeid = the_data['employeeid']
     manager_id = the_data['manager_id']
     firstname = the_data['firstname']
     lastname = the_data['lastname']
@@ -62,13 +62,10 @@ def add_new_employees():
     hiredate = the_data['hiredate']
     accesslevel = the_data['accesslevel']
 
-    # Constructing the query with parameterized values
-    query = "INSERT INTO Employees (EmployeeID, ManagerID, FirstName, LastName, Position, Email, HireDate, AccessLevel) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
-    
+    # Constructing the query with parameterized values    
     # executing and committing the insert statement 
-    cursor = db.get_db().cursor()
-    #cursor.execute(query)
-    cursor.execute("INSERT INTO Employees (employee_id, manager_id, firstname, lastname, position, email, hiredate, accesslevel) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", (employee_id, manager_id, firstname, lastname, position, email, hiredate, accesslevel))
+    cursor = db.get_db().cursor() #cursor.execute(query)
+    cursor.execute("INSERT INTO Employees (employeeid, manager_id, firstname, lastname, position, email, hiredate, accesslevel) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", (employee_id, manager_id, firstname, lastname, position, email, hiredate, accesslevel))
     db.get_db().commit()
     
     return 'Success!'
