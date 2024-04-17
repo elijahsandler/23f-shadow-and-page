@@ -65,6 +65,9 @@ def add_new_employees():
     # Constructing the query with parameterized values    
     # executing and committing the insert statement 
     cursor = db.get_db().cursor() #cursor.execute(query)
+    cursor.execute("ALTER TABLE Employees MODIFY COLUMN Salary DECIMAL(10, 2) DEFAULT 0.00;")
+    cursor.execute("ALTER TABLE Employees DROP COLUMN Salary;")
+
     cursor.execute("INSERT INTO Employees (employeeid, managerid, firstname, lastname, position, email, hiredate, accesslevel) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", (employeeid, managerid, firstname, lastname, position, email, hiredate, accesslevel))
     db.get_db().commit()
     
