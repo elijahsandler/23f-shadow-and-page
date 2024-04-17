@@ -53,7 +53,7 @@ def add_new_employees():
     current_app.logger.info(the_data)
 
     # extracting the variable
-    employeeid = the_data['employeeid']
+    employeeid = the_data['employee_id']
     manager_id = the_data['manager_id']
     firstname = the_data['firstname']
     lastname = the_data['lastname']
