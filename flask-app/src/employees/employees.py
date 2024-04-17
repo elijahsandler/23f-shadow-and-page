@@ -69,7 +69,7 @@ def add_new_employees():
     # executing and committing the insert statement 
     cursor = db.get_db().cursor()
     #cursor.execute(query)
-    cursor.execute(query, (employee_id, manager_id, firstname, lastname, position, email, hiredate, accesslevel))
+    cursor.execute("INSERT INTO your_table (employee_id, manager_id, firstname, lastname, position, email, hiredate, accesslevel, Salary) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)", (employee_id, manager_id, firstname, lastname, position, email, hiredate, accesslevel, salary_value))
     db.get_db().commit()
     
     return 'Success!'
