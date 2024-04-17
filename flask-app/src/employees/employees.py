@@ -66,8 +66,6 @@ def add_new_employees():
     query = "INSERT INTO Employees (EmployeeID, ManagerID, FirstName, LastName, Position, Email, HireDate, AccessLevel) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
     cursor.execute(query, (employee_id, manager_id, firstname, lastname, position, email, hiredate, accesslevel))
 
-    #query = "INSERT INTO Employees (EmployeeID, ManagerID, FirstName, LastName, Position, Email, HireDate, AccessLevel) VALUES ({employee_id}, {manager_id}, '{firstname}', '{lastname}', '{position}', '{email}', '{hiredate}', {accesslevel})"
-
     # executing and committing the insert statement 
     cursor = db.get_db().cursor()
     cursor.execute(query)
