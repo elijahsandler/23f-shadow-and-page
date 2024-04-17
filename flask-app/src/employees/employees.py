@@ -61,15 +61,16 @@ def add_new_employees():
     email = the_data['email']
     hiredate = the_data['hiredate']
     accesslevel = the_data['accesslevel']
+    salary = the_data['salary']
 
     # Constructing the query with parameterized values
-    query = "INSERT INTO Employees (EmployeeID, ManagerID, FirstName, LastName, Position, Email, HireDate, AccessLevel) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
+    query = "INSERT INTO Employees (EmployeeID, ManagerID, FirstName, LastName, Position, Email, HireDate, AccessLevel) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
     
 
     # executing and committing the insert statement 
     cursor = db.get_db().cursor()
     #cursor.execute(query)
-    cursor.execute("INSERT INTO your_table (employee_id, manager_id, firstname, lastname, position, email, hiredate, accesslevel, Salary) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)", (employee_id, manager_id, firstname, lastname, position, email, hiredate, accesslevel, salary_value))
+    cursor.execute("INSERT INTO your_table (employee_id, manager_id, firstname, lastname, position, email, hiredate, accesslevel, salary) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (employee_id, manager_id, firstname, lastname, position, email, hiredate, accesslevel, salary))
     db.get_db().commit()
     
     return 'Success!'
@@ -91,8 +92,8 @@ def update_employees():
     accesslevel = the_data['accesslevel']
 
     # Constructing the query 
-    query = f'update employees set `EmployeeID` = "{employee_id}", `manager_id` = "{title}",\
-          `FirstName` = {firstname}, `lastname` = "{firstname}", `Position` = "{position}", \
+    query = f'update employees set `EmployeeID` = "{employee_id}", `manager_id` = "{manager_id}",\
+          `FirstName` = {firstname}, `lastname` = "{lastname}", `Position` = "{position}", \
             `Email` = {email} where `HireDate` = "{hiredate}", `AccessLevel` = "{accesslevel}"'
     current_app.logger.info(query)
 
