@@ -61,7 +61,7 @@ def add_new_curse():
     effect = the_data['Effect']
     dangerlevel = the_data['DangerLevel']
     description = the_data['Description']
-    countercurse = the_data['CounterCurse']
+    countercurse = the_data['Countercurse']
 
     # # Constructing the query
     query = f"insert into Curses (CurseID, Name, Effect, DangerLevel, Description, \
