@@ -147,3 +147,40 @@ def get_counter_curses_count():
     the_response.status_code = 200
     the_response.mimetype = 'application/json'
     return the_response
+
+
+@curses.route('/projects', methods=['GET'])
+def get_projects():
+    cursor = db.get_db().cursor()
+    cursor.execute(
+        'SELECT * FROM Projects')
+    row_headers = [x[0] for x in cursor.description]
+    json_data = []
+    theData = cursor.fetchall()
+    for row in theData:
+        json_data.append(dict(zip(row_headers, row)))
+    the_response = make_response(jsonify(json_data))
+    the_response.status_code = 200
+    the_response.mimetype = 'application/json'
+    return the_response
+
+
+@curses.route('/projects/<projectID>', methods=['GET'])
+def get_project_info(projectID):
+    cursor = db.get_db().cursor()
+    cursor.execute(
+        f'SELECT p.ProjectID, p.ProjectName, c.CurseID, Name, DangerLevel, EmployeeID, DateJoined, DateLeft \
+        FROM Projects p \
+        JOIN ResearchCurseIDs rci ON p.ProjectID = rci.ProjectID \
+        JOIN Curses c ON rci.ResearchCurseID = c.CurseID \
+        JOIN Employees_Projects ep on p.ProjectID = ep.ProjectID \
+        WHERE p.ProjectID = {projectID}')
+    row_headers = [x[0] for x in cursor.description]
+    json_data = []
+    theData = cursor.fetchall()
+    for row in theData:
+        json_data.append(dict(zip(row_headers, row)))
+    the_response = make_response(jsonify(json_data))
+    the_response.status_code = 200
+    the_response.mimetype = 'application/json'
+    return the_response
