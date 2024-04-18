@@ -5,7 +5,6 @@ from src import db
 sales = Blueprint('sales', __name__)
 
 # Get all sales from the DB
-# Andy
 @sales.route('/sales', methods=['GET'])
 def get_sales():
     cursor = db.get_db().cursor()
@@ -93,3 +92,60 @@ def employee_sales_info(EmployeeID):
     the_response.mimetype = 'application/json'
     return the_response
 
+@sales.route('/sales/<saleID>', methods=['POST'])
+def add_new_sale(saleID):
+    
+    # collecting data from the request object 
+    the_data = request.json
+    current_app.logger.info(the_data)
+
+    # # Constructing the query
+    query = f"insert into sales (SaleID) \
+        values ('{saleID}')"
+
+    # executing and committing the insert statement 
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    db.get_db().commit()
+    
+    return 'Success!'
+
+
+@sales.route('/sales', methods=['PUT'])
+def update_sale():
+    # collecting data from the request object 
+    the_data = request.json
+    current_app.logger.info(the_data)
+
+    #extracting the variable
+    sales_id = the_data['SaleID']
+    customer = the_data['Customer']
+
+    # Constructing the query
+    query = f'update sales set `Customer` = "{customer}" where `SaleID` = {sales_id}'
+    current_app.logger.info(query)
+
+    # executing and committing the update statement 
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    db.get_db().commit()
+    
+    return 'Success!'
+
+
+@sales.route('/sales', methods=['DELETE'])
+def remove_sale():
+    the_data = request.json
+    current_app.logger.info(the_data)
+
+    sale_id = the_data['SaleID']
+
+    query = f'delete from books where `SaleID`={sale_id}'
+    current_app.logger.info(query)
+
+    # executing and committing the update statement 
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    db.get_db().commit()
+    
+    return 'Success!'
