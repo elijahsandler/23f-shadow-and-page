@@ -1,6 +1,9 @@
 # MySQL + Flask Shadow and Page Emporium Project
+## By: Aleksandra Tyutyunik, Andrew Sun, Elijah Sandler, Madeleine Jin
 
-Shadow and Page Emporium is a cursed bookstore. They sell your normal average, run of the mill books, except that about half of them are cursed, with varying levels of severity. This database driven UI allows users to monitor and update the curses they use, books they stock, as well as track sales and ongoing R&D projects. 
+Shadow and Page Emporium is a cursed bookstore. They sell your normal average, run of the mill books, except that about half of them are cursed, with varying levels of severity. This database-driven UI allows users to monitor and update the curses they use, books they stock, as well as track sales and ongoing R&D projects. 
+
+Here is a link to check out a demo of how it works: https://drive.google.com/file/d/1QupVUD2AWJ5k0eahDT8SVZ-jJYPEiM9E/view?usp=sharing
 
 This repo contains a setup for spinning up 3 Docker containers: 
 1. A MySQL 8 container for obvious reasons
