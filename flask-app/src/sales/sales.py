@@ -92,7 +92,9 @@ def employee_sales_info(EmployeeID):
     the_response.mimetype = 'application/json'
     return the_response
 
-@sales.route('/sales/<saleID>', methods=['POST'])
+"""
+
+@sales.route('/sales/<saleid>', methods=['POST'])
 def add_new_sale(saleID):
     
     # collecting data from the request object 
@@ -149,3 +151,5 @@ def remove_sale():
     db.get_db().commit()
     
     return 'Success!'
+
+"""
